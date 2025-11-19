@@ -42,6 +42,10 @@ class WebhookController extends Controller
                 'content' => $messageContent,
             ]);
 
+            // Incrementar contador de não lidas e atualizar last_message_at
+            $lead->increment('unread_count');
+            $lead->update(['last_message_at' => now()]);
+
             return response()->json(['success' => true], 200);
         } catch (\Exception $e) {
             \Log::error('Erro ao processar webhook: ' . $e->getMessage());
